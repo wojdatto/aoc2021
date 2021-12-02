@@ -23,7 +23,7 @@ def main():
         else:
             raise NotImplemented
 
-        print(f"{instruction=}, {amount=}")
+        print(f"{instruction=}\t{amount=}\t{horizontal_pozition=}\t{depth=}")
 
     print(f"\n{horizontal_pozition=}, {depth=}")
 
