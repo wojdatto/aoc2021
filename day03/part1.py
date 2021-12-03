@@ -11,9 +11,9 @@ def main(filename):
     gamma_str = ""
     epsilon_str = ""
 
-    for row in bits:
-        gamma_str += more_common(row)
-        epsilon_str += less_common(row)
+    for column in bits:
+        gamma_str += more_common(column)
+        epsilon_str += less_common(column)
 
     gamma = int(gamma_str, 2)
     epsilon = int(epsilon_str, 2)
@@ -46,8 +46,8 @@ def _read_file(filename) -> list[str]:
 
 
 def test_main():
-    assert main("example_input.txt") == 198
+    assert main("day03/example_input.txt") == 198
 
 
 if __name__ == "__main__":
-    main("input.txt")
+    main("day03/input.txt")
