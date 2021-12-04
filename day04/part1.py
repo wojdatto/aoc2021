@@ -58,9 +58,16 @@ def get_numbers(row: str) -> list[int]:
 
 
 def construct_boards(data: list[str]) -> list[Board]:
+    board_numbers: list[int] = []
+    boards: list[Board] = []
     for line in data:
-        ...
+        if line == "":
+            boards.append(Board(board_numbers))
+            board_numbers = []
+        board_numbers += [number for number in line.split()]
+    return boards
 
 
 if __name__ == "__main__":
-    parse_file(INPUT.split("\n")[1:])
+    game = parse_file(INPUT.split("\n")[1:])
+    print(game)
