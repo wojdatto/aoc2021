@@ -15,8 +15,7 @@ class Game:
     def __init__(self, numbers: list[int], boards: list[Board]) -> None:
         self.numbers = numbers
         self.boards = boards
-        self.final_result = 0
-    
+
     def play_game(self):
         for number in self.numbers:
             for board in self.boards:
@@ -24,10 +23,11 @@ class Game:
                 if self.check_if_won(board.truth_matrix):
                     sum_of_unmarked = sum(board.matrix[np.where(board.truth_matrix == False)])
                     final_result = number * sum_of_unmarked
-                    print(f"Game won!\nThe final result is {final_result}")
-
+                    
                     self.boards.remove(board)
-                    self.final_result = final_result
+                    if len(self.boards) == 0:
+                        print(f"Game won!\nThe final result is {final_result}")
+                        raise StopIteration
                     return final_result
 
     def check_if_won(self, matrix: NDArray) -> bool:
@@ -108,4 +108,8 @@ if __name__ == "__main__":
     game = parse_file(lines)
     
     while True:
-        game.play_game()
+        try:
+            game.play_game()
+        except StopIteration:
+            print("The last game ended.")
+            break
