@@ -15,12 +15,18 @@ class Game:
     def __init__(self, numbers: list[int], boards: list[Board]) -> None:
         self.numbers = numbers
         self.boards = boards
+    
+    def play_game(self):
+        for number in self.numbers:
+            for board in self.boards[0:1]:
+                board.truth_matrix = (board.matrix == number) | (board.truth_matrix)
 
 
 @dataclass
 class Board:
     numbers: list[int]
     matrix: NDArray = field(init=False)
+    truth_matrix: NDArray = np.full((ROWS, COLUMNS), False, dtype=bool)
 
     def __post_init__(self):
         self.matrix = np.array(self.numbers).reshape(ROWS, COLUMNS)
@@ -72,7 +78,7 @@ def construct_boards(data: list[str]) -> list[Board]:
         if line == "":
             boards.append(Board(board_numbers))
             board_numbers = []
-        board_numbers += [number for number in line.split()]
+        board_numbers += [int(number) for number in line.split()]
     return boards
 
 
@@ -80,4 +86,7 @@ if __name__ == "__main__":
     # lines = read_file("day04/input.txt")
     # game = parse_file(INPUT.split("\n")[1:])
     game = parse_file(INPUT.split("\n")[1:])
-    print(game)
+    some_board = game.boards[0]
+    print(some_board)
+    game.play_game()
+    print(some_board)
