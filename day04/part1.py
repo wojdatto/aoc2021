@@ -21,8 +21,10 @@ class Game:
             for board in self.boards:
                 board.truth_matrix = (board.matrix == number) | (board.truth_matrix)
                 if self.check_if_won(board.truth_matrix):
-                    print("Game won!")
-                    # (board.truth_matrix == True).all()
+                    sum_of_unmarked = sum(board.matrix[np.where(board.truth_matrix == False)])
+                    final_result = number * sum_of_unmarked
+                    print(f"Game won!\nThe final result is {final_result}")
+                    return final_result
 
     def check_if_won(self, matrix: NDArray) -> bool:
         if (matrix == True).all(axis=1).any():
@@ -92,11 +94,13 @@ def construct_boards(data: list[str]) -> list[Board]:
     return boards
 
 
+def test_play_game():
+    game = parse_file(INPUT.split("\n")[1:])
+    assert game.play_game() == 4512
+
+
 if __name__ == "__main__":
     # lines = read_file("day04/input.txt")
     # game = parse_file(INPUT.split("\n")[1:])
     game = parse_file(INPUT.split("\n")[1:])
-    some_board = game.boards[0]
-    print(some_board)
     game.play_game()
-    print(some_board)
