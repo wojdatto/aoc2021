@@ -100,7 +100,6 @@ def test_play_game():
 
 
 if __name__ == "__main__":
-    # lines = read_file("day04/input.txt")
-    # game = parse_file(INPUT.split("\n")[1:])
-    game = parse_file(INPUT.split("\n")[1:])
+    lines = read_file("day04/input.txt")
+    game = parse_file(lines)
     game.play_game()
