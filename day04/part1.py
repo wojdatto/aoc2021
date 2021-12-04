@@ -2,20 +2,28 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 
+import numpy as np
+from numpy.typing import NDArray 
+
 ROWS = 5
 COLUMNS = 5
 NUMBERS_IDX = 0
 BOARDS_DATA_START = 2
 
-@dataclass
+
 class Game:
-    numbers: list[int]
-    boards: list[Board]
+    def __init__(self, numbers: list[int], boards: list[Board]) -> None:
+        self.numbers = numbers
+        self.boards = boards
 
 
 @dataclass
 class Board:
     numbers: list[int]
+    matrix: NDArray = field(init=False)
+
+    def __post_init__(self):
+        self.matrix = np.array(self.numbers).reshape(ROWS, COLUMNS)
 
 
 INPUT = """
@@ -69,5 +77,7 @@ def construct_boards(data: list[str]) -> list[Board]:
 
 
 if __name__ == "__main__":
+    # lines = read_file("day04/input.txt")
+    # game = parse_file(INPUT.split("\n")[1:])
     game = parse_file(INPUT.split("\n")[1:])
     print(game)
