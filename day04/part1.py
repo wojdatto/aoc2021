@@ -18,8 +18,18 @@ class Game:
     
     def play_game(self):
         for number in self.numbers:
-            for board in self.boards[0:1]:
+            for board in self.boards:
                 board.truth_matrix = (board.matrix == number) | (board.truth_matrix)
+                if self.check_if_won(board.truth_matrix):
+                    print("Game won!")
+                    # (board.truth_matrix == True).all()
+
+    def check_if_won(self, matrix: NDArray) -> bool:
+        if (matrix == True).all(axis=1).any():
+            return True
+        if (matrix == True).all(axis=0).any():
+            return True
+        return False
 
 
 @dataclass
