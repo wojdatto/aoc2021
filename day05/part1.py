@@ -38,8 +38,8 @@ class Coordinates:
         return max(set(self.y1 + self.y2))
 
     def print_all(self) -> None:
-        for _ in range(self.min_x, self.max_x):
-            for _ in range(self.min_y, self.max_y):
+        for _ in range(self.min_x, self.max_x + 1):
+            for _ in range(self.min_y, self.max_y + 1):
                 print(".", end="")
             print()
 
