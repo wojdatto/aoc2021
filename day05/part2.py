@@ -69,7 +69,7 @@ def main(lines: list[str]):
             x_bigger = max(x1, x2)
 
             range_x = range(x_smaller, x_bigger + 1) if x2 > x1 else reversed(range(x_smaller, x_bigger + 1))
-            range_y = range(x_smaller, x_bigger + 1) if y2 > y1 else reversed(range(y_smaller, y_bigger + 1))
+            range_y = range(y_smaller, y_bigger + 1) if y2 > y1 else reversed(range(y_smaller, y_bigger + 1))
 
             for x, y in zip(range_x, range_y):
                 coords.overlapping[(x, y)] += 1
