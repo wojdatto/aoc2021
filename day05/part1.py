@@ -1,5 +1,4 @@
 from dataclasses import dataclass, field
-from typing import NamedTuple
 
 INPUT = """\
 0,9 -> 5,9
@@ -14,14 +13,20 @@ INPUT = """\
 5,5 -> 8,2
 """
 
-lines = INPUT.splitlines()
-
 @dataclass
 class Coordinates:
     x1: list[int] = field(default_factory=list)
     x2: list[int] = field(default_factory=list)
     y1: list[int] = field(default_factory=list)
     y2: list[int] = field(default_factory=list)
+
+    @property
+    def min_x(self) -> int:
+        return min(set(self.x1 + self.x2))
+
+    @property
+    def min_y(self) -> int:
+        return min(set(self.y1 + self.y2))
 
     @property
     def max_x(self) -> int:
@@ -32,25 +37,30 @@ class Coordinates:
         return max(set(self.y1 + self.y2))
 
     def print_all(self) -> None:
-        for _ in range(self.max_x):
-            for _ in range(self.max_y):
+        for _ in range(self.min_x, self.max_x):
+            for _ in range(self.min_y, self.max_y):
                 print(".", end="")
             print()
 
 
-coords = Coordinates()
+def main(lines: list[str]):
+    coords = Coordinates()
+
+    for line in lines:
+        x1y1, _, x2y2 = line.partition(" -> ")
+        x1, y1, x2, y2 = ",".join([x1y1, x2y2]).split(",")
+
+        coords.x1.append(int(x1))
+        coords.x2.append(int(x2))
+        coords.y1.append(int(y1))
+        coords.y2.append(int(y2))
 
 
-for line in lines:
-    x1y1, _, x2y2 = line.partition(" -> ")
-    x1, y1, x2, y2 = ",".join([x1y1, x2y2]).split(",")
-
-    coords.x1.append(int(x1))
-    coords.x2.append(int(x2))
-    coords.y1.append(int(y1))
-    coords.y2.append(int(y2))
+def parse_input() -> list[str]:
+    with open("day05/input.txt", "r") as file:
+        lines = file.read().splitlines()
+    return lines
 
 
-print(coords)
-
-coords.print_all()
+if __name__ == "__main__":
+    main(INPUT.splitlines())
