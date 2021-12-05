@@ -72,7 +72,7 @@ def main(lines: list[str]):
             for i in range(x_smaller, x_bigger + 1):
                 coords.overlapping[(i, y1)] += 1
 
-    coords.print_all()
+    # coords.print_all()
 
     total_overlapping = sum([1 for i in coords.overlapping.values() if i > 1])
     print(f"{total_overlapping=}")
@@ -85,4 +85,5 @@ def parse_input() -> list[str]:
 
 
 if __name__ == "__main__":
-    main(INPUT.splitlines())
+    # main(INPUT.splitlines())
+    main(parse_input())
