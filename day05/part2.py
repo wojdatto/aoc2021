@@ -38,6 +38,10 @@ class Coordinates:
     def max_y(self) -> int:
         return max(set(self.y1 + self.y2))
 
+    @property
+    def total_overlapping(self) -> int:
+        return sum([1 for i in self.overlapping.values() if i > 1])
+
     def print_all(self) -> None:
         for y in range(self.min_y, self.max_y + 1):
             for x in range(self.min_x, self.max_x + 1):
@@ -48,37 +52,37 @@ class Coordinates:
             print()
 
 
-def main(lines: list[str]):
+def main(lines: list[str], is_test: bool = False):
     coords = parse_coords(lines)
 
     for x1, y1, x2, y2 in zip(coords.x1, coords.y1, coords.x2, coords.y2):
         if x1 == x2:
-            y_smaller = min(y1, y2)
-            y_bigger = max(y1, y2)
-            for i in range(y_smaller, y_bigger + 1):
+            for i in range(min(y1, y2), max(y1, y2) + 1):
                 coords.overlapping[(x1, i)] += 1
         elif y1 == y2:
-            x_smaller = min(x1, x2)
-            x_bigger = max(x1, x2)
-            for i in range(x_smaller, x_bigger + 1):
+            for i in range(min(x1, x2), max(x1, x2) + 1):
                 coords.overlapping[(i, y1)] += 1
         else:
-            y_smaller = min(y1, y2)
-            y_bigger = max(y1, y2)
-            x_smaller = min(x1, x2)
-            x_bigger = max(x1, x2)
+            range_x = range(min(x1, x2), max(x1, x2) + 1)
+            if x1 > x2:
+                # to handle the situation when X coord in decreasing
+                # and Y coord is not
+                range_x = reversed(range_x)
 
-            range_x = range(x_smaller, x_bigger + 1) if x2 > x1 else reversed(range(x_smaller, x_bigger + 1))
-            range_y = range(y_smaller, y_bigger + 1) if y2 > y1 else reversed(range(y_smaller, y_bigger + 1))
+            range_y = range(min(y1, y2), max(y1, y2) + 1)
+            if y1 > y2:
+                # to handle the situation when Y coord in decreasing
+                # and X coord is not
+                range_y = reversed(range_y)
+
+            # When both are reversed this is the same if no one would be reversed
 
             for x, y in zip(range_x, range_y):
                 coords.overlapping[(x, y)] += 1
 
-
-    # coords.print_all()
-
-    total_overlapping = sum([1 for i in coords.overlapping.values() if i > 1])
-    print(f"\n{total_overlapping=}")
+    if is_test:
+        coords.print_all()
+    print(f"\n{coords.total_overlapping=}")
 
 
 def parse_coords(data: list[str]) -> Coordinates:
@@ -101,5 +105,5 @@ def parse_input() -> list[str]:
 
 
 if __name__ == "__main__":
-    # main(INPUT.splitlines())
+    # main(INPUT.splitlines(), is_test=True)
     main(parse_input())
