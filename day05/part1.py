@@ -74,6 +74,9 @@ def main(lines: list[str]):
 
     coords.print_all()
 
+    total_overlapping = sum([1 for i in coords.overlapping.values() if i > 1])
+    print(f"{total_overlapping=}")
+
 
 def parse_input() -> list[str]:
     with open("day05/input.txt", "r") as file:
