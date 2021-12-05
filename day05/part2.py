@@ -49,16 +49,7 @@ class Coordinates:
 
 
 def main(lines: list[str]):
-    coords = Coordinates()
-
-    for line in lines:
-        x1y1, _, x2y2 = line.partition(" -> ")
-        x1, y1, x2, y2 = ",".join([x1y1, x2y2]).split(",")
-
-        coords.x1.append(int(x1))
-        coords.x2.append(int(x2))
-        coords.y1.append(int(y1))
-        coords.y2.append(int(y2))
+    coords = parse_coords(lines)
 
     for x1, y1, x2, y2 in zip(coords.x1, coords.y1, coords.x2, coords.y2):
         if x1 == x2:
@@ -77,15 +68,32 @@ def main(lines: list[str]):
             x_smaller = min(x1, x2)
             x_bigger = max(x1, x2)
 
-            for y in range(y_smaller, y_bigger + 1):
-                for x in range(x_smaller, x_bigger + 1):
-                    coords.overlapping[(x, y)] += 1
+            # check if the angle is 45 deg
+            if y_bigger - y_smaller == x_bigger - x_smaller:
+                for y in range(y_smaller, y_bigger + 1):
+                    for x in range(x_smaller, x_bigger + 1):
+                        coords.overlapping[(x, y)] += 1
+            else:
+                ...
 
     coords.print_all()
 
     total_overlapping = sum([1 for i in coords.overlapping.values() if i > 1])
     print(f"\n{total_overlapping=}")
 
+
+def parse_coords(data: list[str]) -> Coordinates:
+    coords = Coordinates()
+    for line in data:
+        x1y1, _, x2y2 = line.partition(" -> ")
+        x1, y1, x2, y2 = ",".join([x1y1, x2y2]).split(",")
+
+        coords.x1.append(int(x1))
+        coords.x2.append(int(x2))
+        coords.y1.append(int(y1))
+        coords.y2.append(int(y2))
+
+    return coords
 
 def parse_input() -> list[str]:
     with open("day05/input.txt", "r") as file:
