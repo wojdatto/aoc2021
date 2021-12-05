@@ -1,3 +1,4 @@
+from collections import defaultdict
 from dataclasses import dataclass, field
 
 INPUT = """\
@@ -54,6 +55,14 @@ def main(lines: list[str]):
         coords.x2.append(int(x2))
         coords.y1.append(int(y1))
         coords.y2.append(int(y2))
+
+    overlapping = defaultdict(int)
+    for x1, y1, x2, y2 in zip(coords.x1, coords.y1, coords.x2, coords.y2):
+        if x1 == x2 or y1 == y2:
+            overlapping[(x1, y1)] += 1
+            overlapping[(x2, y2)] += 1
+
+    print(overlapping)
 
 
 def parse_input() -> list[str]:
