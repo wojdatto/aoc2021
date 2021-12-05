@@ -31,6 +31,12 @@ class Coordinates:
     def max_y(self) -> int:
         return max(set(self.y1 + self.y2))
 
+    def print_all(self) -> None:
+        for _ in range(self.max_x):
+            for _ in range(self.max_y):
+                print(".", end="")
+            print()
+
 
 coords = Coordinates()
 
@@ -47,4 +53,4 @@ for line in lines:
 
 print(coords)
 
-print(coords.max_x)
+coords.print_all()
