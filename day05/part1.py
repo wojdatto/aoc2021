@@ -20,6 +20,7 @@ class Coordinates:
     x2: list[int] = field(default_factory=list)
     y1: list[int] = field(default_factory=list)
     y2: list[int] = field(default_factory=list)
+    overlapping = defaultdict(int)
 
     @property
     def min_x(self) -> int:
@@ -38,9 +39,12 @@ class Coordinates:
         return max(set(self.y1 + self.y2))
 
     def print_all(self) -> None:
-        for _ in range(self.min_y, self.max_y + 1):
-            for _ in range(self.min_x, self.max_x + 1):
-                print(".", end="")
+        for y in range(self.min_y, self.max_y + 1):
+            for x in range(self.min_x, self.max_x + 1):
+                if self.overlapping[(x, y)]:
+                    print(self.overlapping[(x, y)], end="")
+                else:
+                    print(".", end="")
             print()
 
 
@@ -56,28 +60,19 @@ def main(lines: list[str]):
         coords.y1.append(int(y1))
         coords.y2.append(int(y2))
 
-    overlapping = defaultdict(int)
     for x1, y1, x2, y2 in zip(coords.x1, coords.y1, coords.x2, coords.y2):
         if x1 == x2:
             y_smaller = min(y1, y2)
             y_bigger = max(y1, y2)
             for i in range(y_smaller, y_bigger + 1):
-                overlapping[(x1, i)] += 1
+                coords.overlapping[(x1, i)] += 1
         if y1 == y2:
             x_smaller = min(x1, x2)
             x_bigger = max(x1, x2)
             for i in range(x_smaller, x_bigger + 1):
-                overlapping[(i, y1)] += 1
+                coords.overlapping[(i, y1)] += 1
 
-    print(overlapping)
-
-    for y in range(coords.min_y, coords.max_y + 1):
-        for x in range(coords.min_x, coords.max_x + 1):
-            if overlapping[(x, y)]:
-                print(overlapping[(x, y)], end="")
-            else:
-                print(".", end="")
-        print()
+    coords.print_all()
 
 
 def parse_input() -> list[str]:
