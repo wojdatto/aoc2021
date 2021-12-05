@@ -23,6 +23,14 @@ class Coordinates:
     y1: list[int] = field(default_factory=list)
     y2: list[int] = field(default_factory=list)
 
+    @property
+    def max_x(self) -> int:
+        return max(set(self.x1 + self.x2))
+
+    @property
+    def max_y(self) -> int:
+        return max(set(self.y1 + self.y2))
+
 
 coords = Coordinates()
 
@@ -38,3 +46,5 @@ for line in lines:
 
 
 print(coords)
+
+print(coords.max_x)
