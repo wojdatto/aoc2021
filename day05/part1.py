@@ -38,8 +38,8 @@ class Coordinates:
         return max(set(self.y1 + self.y2))
 
     def print_all(self) -> None:
-        for _ in range(self.min_x, self.max_x + 1):
-            for _ in range(self.min_y, self.max_y + 1):
+        for _ in range(self.min_y, self.max_y + 1):
+            for _ in range(self.min_x, self.max_x + 1):
                 print(".", end="")
             print()
 
@@ -71,8 +71,8 @@ def main(lines: list[str]):
 
     print(overlapping)
 
-    for x in range(coords.min_x, coords.max_x + 1):
-        for y in range(coords.min_y, coords.max_y + 1):
+    for y in range(coords.min_y, coords.max_y + 1):
+        for x in range(coords.min_x, coords.max_x + 1):
             if overlapping[(x, y)]:
                 print(overlapping[(x, y)], end="")
             else:
