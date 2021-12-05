@@ -68,15 +68,14 @@ def main(lines: list[str]):
             x_smaller = min(x1, x2)
             x_bigger = max(x1, x2)
 
-            # check if the angle is 45 deg
-            if y_bigger - y_smaller == x_bigger - x_smaller:
-                for y in range(y_smaller, y_bigger + 1):
-                    for x in range(x_smaller, x_bigger + 1):
-                        coords.overlapping[(x, y)] += 1
-            else:
-                ...
+            range_x = range(x_smaller, x_bigger + 1) if x2 > x1 else reversed(range(x_smaller, x_bigger + 1))
+            range_y = range(x_smaller, x_bigger + 1) if y2 > y1 else reversed(range(y_smaller, y_bigger + 1))
 
-    coords.print_all()
+            for x, y in zip(range_x, range_y):
+                coords.overlapping[(x, y)] += 1
+
+
+    # coords.print_all()
 
     total_overlapping = sum([1 for i in coords.overlapping.values() if i > 1])
     print(f"\n{total_overlapping=}")
@@ -102,5 +101,5 @@ def parse_input() -> list[str]:
 
 
 if __name__ == "__main__":
-    main(INPUT.splitlines())
-    # main(parse_input())
+    # main(INPUT.splitlines())
+    main(parse_input())
