@@ -58,11 +58,26 @@ def main(lines: list[str]):
 
     overlapping = defaultdict(int)
     for x1, y1, x2, y2 in zip(coords.x1, coords.y1, coords.x2, coords.y2):
-        if x1 == x2 or y1 == y2:
-            overlapping[(x1, y1)] += 1
-            overlapping[(x2, y2)] += 1
+        if x1 == x2:
+            y_smaller = min(y1, y2)
+            y_bigger = max(y1, y2)
+            for i in range(y_smaller, y_bigger + 1):
+                overlapping[(x1, i)] += 1
+        if y1 == y2:
+            x_smaller = min(x1, x2)
+            x_bigger = max(x1, x2)
+            for i in range(x_smaller, x_bigger + 1):
+                overlapping[(i, y1)] += 1
 
     print(overlapping)
+
+    for x in range(coords.min_x, coords.max_x + 1):
+        for y in range(coords.min_y, coords.max_y + 1):
+            if overlapping[(x, y)]:
+                print(overlapping[(x, y)], end="")
+            else:
+                print(".", end="")
+        print()
 
 
 def parse_input() -> list[str]:
