@@ -3,7 +3,7 @@ def main():
     depth = 0
     aim = 0
 
-    with open("input.txt", "r") as file:
+    with open("day02/input.txt", "r") as file:
         lines = []
         for line in file.readlines():
             lines.append(line.strip())

@@ -2,7 +2,7 @@
 
 
 def main():
-    with open("inputfile", "r") as file:
+    with open("day01/inputfile", "r") as file:
         lines = file.readlines()
 
     measurement = 0
