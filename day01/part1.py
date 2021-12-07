@@ -1,5 +1,5 @@
 def main():
-    with open("day01/inputfile", "r") as file:
+    with open("day01/input.txt", "r") as file:
         lines = file.readlines()
 
     measurement = 0

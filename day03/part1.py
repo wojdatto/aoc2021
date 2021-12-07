@@ -1,6 +1,20 @@
-def main(filename):
-    lines = _read_file(filename)
+INPUT = """\
+00100
+11110
+10110
+10111
+10101
+01111
+00111
+11100
+10000
+11001
+00010
+01010
+"""
 
+
+def main(lines: list[str]):
     num_of_bits = len(lines[0])
     bits: list[list[str]] = [[] for i in range(num_of_bits)]
 
@@ -37,17 +51,15 @@ def more_common(data: list[str]) -> str:
     return "1"
 
 
-def _read_file(filename) -> list[str]:
-    with open(filename, "r") as file:
-        lines = []
-        for line in file.readlines():
-            lines.append(line.strip())
-    return lines
+def parse_input() -> list[str]:
+    with open("day03/input.txt", "r") as file:
+        return file.read().splitlines()
 
 
 def test_main():
-    assert main("day03/example_input.txt") == 198
+    input_data = INPUT.splitlines()
+    assert main(input_data) == 198
 
 
 if __name__ == "__main__":
-    main("day03/input.txt")
+    main(parse_input())
