@@ -18,14 +18,17 @@ def main(filename):
 
         oxygen_str += more_common(included_values)
 
-        more_common_indices = [i for i, x in enumerate(column) if (x == more_common(included_values) and i in more_common_indices)]
+        more_common_indices = [
+            i
+            for i, x in enumerate(column)
+            if (x == more_common(included_values) and i in more_common_indices)
+        ]
 
         included_values = []
 
     oxygen = int(oxygen_str, 2)
     print(f"{oxygen_str=}")
     print(f"{oxygen=}")
-
 
     co2_str = ""
     included_values = []
@@ -36,11 +39,19 @@ def main(filename):
                 included_values.append(bit)
 
         if included_values.count("0") == 1:
-            interesting_idx_list = [i for i, x in enumerate(column) if (x == less_common(included_values) and i in less_common_indices)]
+            interesting_idx_list = [
+                i
+                for i, x in enumerate(column)
+                if (x == less_common(included_values) and i in less_common_indices)
+            ]
             assert len(interesting_idx_list) == 1
             co2_str = lines[interesting_idx_list[0]]
 
-        less_common_indices = [i for i, x in enumerate(column) if (x == less_common(included_values) and i in less_common_indices)]
+        less_common_indices = [
+            i
+            for i, x in enumerate(column)
+            if (x == less_common(included_values) and i in less_common_indices)
+        ]
 
         included_values = []
 

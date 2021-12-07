@@ -31,4 +31,5 @@ def test_main_example_data():
 
 
 if __name__ == "__main__":
-    main(parse_input(), DAYS_TO_SIMULATE)
+    total_fish = main(parse_input(), DAYS_TO_SIMULATE)
+    print(f"{total_fish=}")

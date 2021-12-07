@@ -10,7 +10,6 @@ def main():
     commands = lines
 
     for cmd in commands:
-
         instruction, amount = cmd.split()
         amount = int(amount)
 
@@ -21,7 +20,7 @@ def main():
         elif instruction == "up":
             depth -= amount
         else:
-            raise NotImplemented
+            raise AssertionError("We shouldn't end here")
 
         print(f"{instruction=}\t{amount=}\t{horizontal_pozition=}\t{depth=}")
 
@@ -29,7 +28,6 @@ def main():
 
     print(f"\n{horizontal_pozition*depth=}")
 
-        
 
 if __name__ == "__main__":
     main()

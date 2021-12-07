@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 
 import numpy as np
-from numpy.typing import NDArray 
+from numpy.typing import NDArray
 
 ROWS = 5
 COLUMNS = 5
@@ -15,21 +15,23 @@ class Game:
     def __init__(self, numbers: list[int], boards: list[Board]) -> None:
         self.numbers = numbers
         self.boards = boards
-    
+
     def play_game(self):
         for number in self.numbers:
             for board in self.boards:
                 board.truth_matrix = (board.matrix == number) | (board.truth_matrix)
                 if self.check_if_won(board.truth_matrix):
-                    sum_of_unmarked = sum(board.matrix[np.where(board.truth_matrix == False)])
+                    sum_of_unmarked = sum(
+                        board.matrix[np.where(board.truth_matrix == 0)]
+                    )
                     final_result = number * sum_of_unmarked
                     print(f"Game won!\nThe final result is {final_result}")
                     return final_result
 
     def check_if_won(self, matrix: NDArray) -> bool:
-        if (matrix == True).all(axis=1).any():
+        if (matrix == 1).all(axis=1).any():
             return True
-        if (matrix == True).all(axis=0).any():
+        if (matrix == 1).all(axis=0).any():
             return True
         return False
 

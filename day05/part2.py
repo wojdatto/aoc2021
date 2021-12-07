@@ -14,6 +14,7 @@ INPUT = """\
 5,5 -> 8,2
 """
 
+
 @dataclass
 class Coordinates:
     x1: list[int] = field(default_factory=list)
@@ -98,10 +99,10 @@ def parse_coords(data: list[str]) -> Coordinates:
 
     return coords
 
+
 def parse_input() -> list[str]:
     with open("day05/input.txt", "r") as file:
-        lines = file.read().splitlines()
-    return lines
+        return file.read().splitlines()
 
 
 if __name__ == "__main__":

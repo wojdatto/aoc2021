@@ -13,7 +13,7 @@ def main(data) -> int:
         fuel_spent = 0
         for number in data:
             fuel_spent += abs(number - target)
-        
+
         if fuel_spent_min == -1:
             fuel_spent_min = fuel_spent
         elif fuel_spent < fuel_spent_min:

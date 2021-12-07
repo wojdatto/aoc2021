@@ -1,5 +1,5 @@
-from copy import copy
 from collections import defaultdict
+from copy import copy
 
 INPUT = "3,4,3,1,2"
 DAYS_TO_SIMULATE = 256
@@ -8,7 +8,7 @@ MAX_FISH_AGE = 8
 
 def main(data: list[int], days: int) -> int:
     fish = defaultdict(int)
-    
+
     # Initialize the defaultdict with every day
     for i in range(MAX_FISH_AGE + 1):
         fish[i]
