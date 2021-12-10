@@ -24,16 +24,16 @@ def are_neighbors_bigger(
     matrix: list[list[int]], number: int, row_i: int, col_i: int
 ) -> bool:
     # top
-    if row_i != 0 and not number < matrix[row_i - 1][col_i]:
+    if row_i != 0 and number >= matrix[row_i - 1][col_i]:
         return False
     # bottom
-    if row_i != len(matrix) - 1 and not number < matrix[row_i + 1][col_i]:
+    if row_i != len(matrix) - 1 and number >= matrix[row_i + 1][col_i]:
         return False
     # left
-    if col_i != 0 and not number < matrix[row_i][col_i - 1]:
+    if col_i != 0 and number >= matrix[row_i][col_i - 1]:
         return False
     # right
-    if col_i != len(matrix[0]) - 1 and not number < matrix[row_i][col_i + 1]:
+    if col_i != len(matrix[0]) - 1 and number >= matrix[row_i][col_i + 1]:
         return False
 
     return True
