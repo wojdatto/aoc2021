@@ -1,25 +1,15 @@
-from collections import Counter
+from statistics import median
 
 INPUT = "16,1,2,0,4,2,7,1,2,14"
 
 
-def main(data) -> int:
-    cnt = Counter()
-    for number in data:
-        cnt[number] += 1
+def main(numbers: list[int]) -> int:
+    target = int(median(numbers))
+    return compute_spent_fuel(numbers, target)
 
-    fuel_spent_min = -1
-    for target, _ in cnt.most_common():
-        fuel_spent = 0
-        for number in data:
-            fuel_spent += abs(number - target)
 
-        if fuel_spent_min == -1:
-            fuel_spent_min = fuel_spent
-        elif fuel_spent < fuel_spent_min:
-            fuel_spent_min = fuel_spent
-
-    return fuel_spent_min
+def compute_spent_fuel(numbers: list[int], target: int) -> int:
+    return sum(abs(n - target) for n in numbers)
 
 
 def parse_input() -> list[int]:
