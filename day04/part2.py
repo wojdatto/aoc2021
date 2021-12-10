@@ -9,7 +9,6 @@ ROWS = 5
 COLUMNS = 5
 NUMBERS_IDX = 0
 BOARDS_DATA_START = 2
-LAST_RESULT = -1
 
 
 class Game:
@@ -17,7 +16,8 @@ class Game:
         self.numbers = numbers
         self.boards = boards
 
-    def play_game(self) -> int:
+    def play_game(self) -> tuple[int, bool]:
+        is_last_result = False
         for number in self.numbers:
             for board in self.boards:
                 board.truth_matrix = (board.matrix == number) | (board.truth_matrix)
@@ -29,12 +29,11 @@ class Game:
 
                     self.boards.remove(board)
                     if len(self.boards) == 0:
-                        global LAST_RESULT
-                        LAST_RESULT = final_result
-                        raise StopIteration
-                    return final_result
+                        is_last_result = True
+                        return final_result, is_last_result
 
-        raise AssertionError
+                    return final_result, is_last_result
+        raise AssertionError("We shouldn't end here")
 
     def check_if_won(self, matrix: NDArray) -> bool:
         if (matrix == 1).all(axis=1).any():
@@ -108,11 +107,9 @@ def main(lines: list[str]) -> int:
     game = parse_file(lines)
 
     while True:
-        try:
-            game.play_game()
-        except StopIteration:
-            break
-    return LAST_RESULT
+        result, is_last_result = game.play_game()
+        if is_last_result:
+            return result
 
 
 def test_play_game_example_data():
