@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from collections import defaultdict
 
 INPUT = """\
@@ -36,7 +34,7 @@ def main(input_lines: list[str]) -> int:
     return calculate_score(illegal_chars)
 
 
-def find_illegal_char(line: str) -> str | None:
+def find_illegal_char(line: str) -> str:
     line_simplified = simplify_line(line)
     for char in line_simplified:
         if char in SCORING.keys():
