@@ -1,27 +1,18 @@
-from collections import defaultdict
-
-import pytest
-
 INPUT = "16,1,2,0,4,2,7,1,2,14"
 
 
-def main(data) -> int:
-    cnt = defaultdict(int)
-    for number in data:
-        cnt[number] += 1
+def main(numbers: list[int]) -> int:
+    return min(
+        compute_spent_fuel(numbers, n) for n in range(min(numbers), max(numbers) + 1)
+    )
 
-    fuel_spent_min = -1
-    for target in range(max(cnt.keys())):
-        fuel_spent = 0
-        for number in data:
-            fuel_spent += sum([i for i in range(abs(number - target) + 1)])
 
-        if fuel_spent_min == -1:
-            fuel_spent_min = fuel_spent
-        elif fuel_spent < fuel_spent_min:
-            fuel_spent_min = fuel_spent
+def compute_spent_fuel(numbers: list[int], target: int) -> int:
+    """Computes the sum of 1 + 2 + 3 + ... + n
 
-    return fuel_spent_min
+    It is equal to (n * (n + 1)) // 2.
+    """
+    return sum(abs(n - target) * (abs(n - target) + 1) // 2 for n in numbers)
 
 
 def parse_input() -> list[int]:
@@ -34,7 +25,6 @@ def test_main_example_data():
     assert main([int(i) for i in INPUT.split(",")]) == 168
 
 
-@pytest.mark.slow
 def test_main_real_data():
     assert main(parse_input()) == 98257206
 
