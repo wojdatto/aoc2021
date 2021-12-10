@@ -41,6 +41,13 @@ def test_main_example_data():
     assert main(test_input, DAYS_TO_SIMULATE) == 26984457539
 
 
+def test_main_real_data():
+    assert main(parse_input(), DAYS_TO_SIMULATE) == 1710623015163
+
+
 if __name__ == "__main__":
-    total_fish = main(parse_input(), DAYS_TO_SIMULATE)
-    print(f"{total_fish=}")
+    test_result = main([int(i) for i in INPUT.split(",")], DAYS_TO_SIMULATE)
+    print(f"{test_result=}")
+
+    real_result = main(parse_input(), DAYS_TO_SIMULATE)
+    print(f"{real_result=}")
