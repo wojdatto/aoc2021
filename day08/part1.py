@@ -81,13 +81,16 @@ def test_main_example_data():
     assert main(test_input_parsed) == 26
 
 
+def test_main_real_data():
+    test_input_parsed = [parse_input_data(row) for row in parse_input_file()]
+    assert main(test_input_parsed) == 342
+
+
 if __name__ == "__main__":
     test_input_parsed = [parse_input_data(row) for row in INPUT.splitlines()]
-
     test_result = main(test_input_parsed)
     print(f"{test_result=}")
 
     real_input_parsed = [parse_input_data(row) for row in parse_input_file()]
-
     real_result = main(real_input_parsed)
     print(f"{real_result=}")
