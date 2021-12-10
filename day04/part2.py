@@ -9,6 +9,7 @@ ROWS = 5
 COLUMNS = 5
 NUMBERS_IDX = 0
 BOARDS_DATA_START = 2
+LAST_RESULT = -1
 
 
 class Game:
@@ -16,7 +17,7 @@ class Game:
         self.numbers = numbers
         self.boards = boards
 
-    def play_game(self):
+    def play_game(self) -> int:
         for number in self.numbers:
             for board in self.boards:
                 board.truth_matrix = (board.matrix == number) | (board.truth_matrix)
@@ -28,9 +29,12 @@ class Game:
 
                     self.boards.remove(board)
                     if len(self.boards) == 0:
-                        print(f"Game won!\nThe final result is {final_result}")
+                        global LAST_RESULT
+                        LAST_RESULT = final_result
                         raise StopIteration
                     return final_result
+
+        raise AssertionError
 
     def check_if_won(self, matrix: NDArray) -> bool:
         if (matrix == 1).all(axis=1).any():
@@ -50,7 +54,7 @@ class Board:
         self.matrix = np.array(self.numbers).reshape(ROWS, COLUMNS)
 
 
-INPUT = """
+INPUT = """\
 7,4,9,5,11,17,23,2,0,14,21,24,10,16,13,6,15,25,12,22,18,20,8,19,3,26,1
 
 22 13 17 11  0
@@ -100,18 +104,28 @@ def construct_boards(data: list[str]) -> list[Board]:
     return boards
 
 
-def test_play_game():
-    game = parse_file(INPUT.split("\n")[1:])
-    assert game.play_game() == 4512
-
-
-if __name__ == "__main__":
-    lines = read_file("day04/input.txt")
+def main(lines: list[str]) -> int:
     game = parse_file(lines)
 
     while True:
         try:
             game.play_game()
         except StopIteration:
-            print("The last game ended.")
             break
+    return LAST_RESULT
+
+
+def test_play_game_example_data():
+    assert main(INPUT.split("\n")) == 1924
+
+
+def test_play_game_real_data():
+    assert main(read_file("day04/input.txt")) == 18063
+
+
+if __name__ == "__main__":
+    test_result = main(INPUT.split("\n"))
+    print(f"{test_result=}")
+
+    real_result = main(read_file("day04/input.txt"))
+    print(f"{real_result=}")
