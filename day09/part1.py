@@ -1,6 +1,3 @@
-import numpy as np
-from numpy.typing import NDArray
-
 INPUT = """\
 2199943210
 3987894921
@@ -11,7 +8,7 @@ INPUT = """\
 
 
 def main(input_lines: list[str]) -> int:
-    matrix = np.array([[int(n) for n in line] for line in input_lines])
+    matrix = [[int(n) for n in line] for line in input_lines]
 
     low_points: list[tuple[int, int, int]] = []
 
@@ -23,59 +20,23 @@ def main(input_lines: list[str]) -> int:
     return sum(number + 1 for _, _, number in low_points)
 
 
-def are_neighbors_bigger(matrix: NDArray, number: int, row_i: int, col_i: int) -> bool:
-    max_row_i = matrix.shape[0] - 1
-    max_col_i = matrix.shape[1] - 1
+def are_neighbors_bigger(
+    matrix: list[list[int]], number: int, row_i: int, col_i: int
+) -> bool:
+    # top
+    if row_i != 0 and not number < matrix[row_i - 1][col_i]:
+        return False
+    # bottom
+    if row_i != len(matrix) - 1 and not number < matrix[row_i + 1][col_i]:
+        return False
+    # left
+    if col_i != 0 and not number < matrix[row_i][col_i - 1]:
+        return False
+    # right
+    if col_i != len(matrix[0]) - 1 and not number < matrix[row_i][col_i + 1]:
+        return False
 
-    # Matrix corners
-    if row_i == 0 and col_i == 0:
-        return number < matrix[row_i, col_i + 1] and number < matrix[row_i + 1, col_i]
-    if row_i == 0 and col_i == max_col_i:
-        return number < matrix[row_i, col_i - 1] and number < matrix[row_i + 1, col_i]
-    if row_i == max_row_i and col_i == 0:
-        return number < matrix[row_i, col_i + 1] and number < matrix[row_i - 1, col_i]
-    if row_i == max_row_i and col_i == max_col_i:
-        return number < matrix[row_i, col_i - 1] and number < matrix[row_i - 1, col_i]
-
-    # top row
-    if row_i == 0:
-        return (
-            number < matrix[row_i, col_i - 1]
-            and number < matrix[row_i, col_i + 1]
-            and number < matrix[row_i + 1, col_i]
-        )
-
-    # bottom row
-    if row_i == max_row_i:
-        return (
-            number < matrix[row_i, col_i - 1]
-            and number < matrix[row_i, col_i + 1]
-            and number < matrix[row_i - 1, col_i]
-        )
-
-    # first column
-    if col_i == 0:
-        return (
-            number < matrix[row_i - 1, col_i]
-            and number < matrix[row_i + 1, col_i]
-            and number < matrix[row_i, col_i + 1]
-        )
-
-    # last column
-    if col_i == max_col_i:
-        return (
-            number < matrix[row_i - 1, col_i]
-            and number < matrix[row_i + 1, col_i]
-            and number < matrix[row_i, col_i - 1]
-        )
-
-    # the rest
-    return (
-        number < matrix[row_i - 1, col_i]
-        and number < matrix[row_i + 1, col_i]
-        and number < matrix[row_i, col_i - 1]
-        and number < matrix[row_i, col_i + 1]
-    )
+    return True
 
 
 def parse_input_file() -> list[str]:

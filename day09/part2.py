@@ -1,8 +1,6 @@
 import math
 
-import numpy as np
 from colorama import Fore, Style
-from numpy.typing import NDArray
 
 INPUT = """\
 2199943210
@@ -14,7 +12,7 @@ INPUT = """\
 
 
 def main(input_lines: list[str]) -> int:
-    matrix = np.array([[int(n) for n in line] for line in input_lines])
+    matrix = [[int(n) for n in line] for line in input_lines]
     low_points: list[tuple[int, int]] = []
 
     for row_i, row in enumerate(matrix):
@@ -41,7 +39,7 @@ def main(input_lines: list[str]) -> int:
     return math.prod(three_largest_basin_size)
 
 
-def print_basin(matrix: NDArray, basin: set[tuple[int, int]]) -> None:
+def print_basin(matrix: list[list[int]], basin: set[tuple[int, int]]) -> None:
     for ri, row in enumerate(matrix):
         for ci, number in enumerate(row):
             is_print = False
@@ -57,98 +55,53 @@ def print_basin(matrix: NDArray, basin: set[tuple[int, int]]) -> None:
 
 
 def check_neighbors(
-    matrix: NDArray, point: tuple[int, int], basin: set[tuple[int, int]]
+    matrix: list[list[int]], point: tuple[int, int], basin: set[tuple[int, int]]
 ) -> set[tuple[int, int]]:
-    row_i, col_i = point
-    value = matrix[row_i, col_i]
-    diff_matrix = matrix - value
-
-    max_row_i = matrix.shape[0] - 1
-    max_col_i = matrix.shape[1] - 1
-
-    if row_i == 0:
-        top = None
-    else:
-        top = row_i - 1, col_i
-
-    if row_i == max_row_i:
-        bottom = None
-    else:
-        bottom = row_i + 1, col_i
-
-    if col_i == 0:
-        left = None
-    else:
-        left = row_i, col_i - 1
-
-    if col_i == max_col_i:
-        right = None
-    else:
-        right = row_i, col_i + 1
-
-    neighbors = [neigh for neigh in [right, left, top, bottom] if neigh]
-
-    for neigh in neighbors:
-        if diff_matrix[neigh] > 0 and matrix[neigh] < 9 and neigh not in basin:
+    for neigh in get_neighbors(matrix, point):
+        if matrix[neigh[0]][neigh[1]] < 9 and neigh not in basin:
             basin.add(neigh)
             basin = check_neighbors(matrix, neigh, basin)
-
     return basin
 
 
-def are_neighbors_bigger(matrix: NDArray, number: int, row_i: int, col_i: int) -> bool:
-    max_row_i = matrix.shape[0] - 1
-    max_col_i = matrix.shape[1] - 1
+def get_neighbors(
+    matrix: list[list[int]], point: tuple[int, int]
+) -> list[tuple[int, int]]:
+    row_i, col_i = point
+    neighbors = []
 
-    # Matrix corners
-    if row_i == 0 and col_i == 0:
-        return number < matrix[row_i, col_i + 1] and number < matrix[row_i + 1, col_i]
-    if row_i == 0 and col_i == max_col_i:
-        return number < matrix[row_i, col_i - 1] and number < matrix[row_i + 1, col_i]
-    if row_i == max_row_i and col_i == 0:
-        return number < matrix[row_i, col_i + 1] and number < matrix[row_i - 1, col_i]
-    if row_i == max_row_i and col_i == max_col_i:
-        return number < matrix[row_i, col_i - 1] and number < matrix[row_i - 1, col_i]
+    if row_i != 0:
+        neighbors.append((row_i - 1, col_i))
 
-    # top row
-    if row_i == 0:
-        return (
-            number < matrix[row_i, col_i - 1]
-            and number < matrix[row_i, col_i + 1]
-            and number < matrix[row_i + 1, col_i]
-        )
+    if row_i != len(matrix) - 1:
+        neighbors.append((row_i + 1, col_i))
 
-    # bottom row
-    if row_i == max_row_i:
-        return (
-            number < matrix[row_i, col_i - 1]
-            and number < matrix[row_i, col_i + 1]
-            and number < matrix[row_i - 1, col_i]
-        )
+    if col_i != 0:
+        neighbors.append((row_i, col_i - 1))
 
-    # first column
-    if col_i == 0:
-        return (
-            number < matrix[row_i - 1, col_i]
-            and number < matrix[row_i + 1, col_i]
-            and number < matrix[row_i, col_i + 1]
-        )
+    if col_i != len(matrix[0]) - 1:
+        neighbors.append((row_i, col_i + 1))
 
-    # last column
-    if col_i == max_col_i:
-        return (
-            number < matrix[row_i - 1, col_i]
-            and number < matrix[row_i + 1, col_i]
-            and number < matrix[row_i, col_i - 1]
-        )
+    return neighbors
 
-    # the rest
-    return (
-        number < matrix[row_i - 1, col_i]
-        and number < matrix[row_i + 1, col_i]
-        and number < matrix[row_i, col_i - 1]
-        and number < matrix[row_i, col_i + 1]
-    )
+
+def are_neighbors_bigger(
+    matrix: list[list[int]], number: int, row_i: int, col_i: int
+) -> bool:
+    # top
+    if row_i != 0 and not number < matrix[row_i - 1][col_i]:
+        return False
+    # bottom
+    if row_i != len(matrix) - 1 and not number < matrix[row_i + 1][col_i]:
+        return False
+    # left
+    if col_i != 0 and not number < matrix[row_i][col_i - 1]:
+        return False
+    # right
+    if col_i != len(matrix[0]) - 1 and not number < matrix[row_i][col_i + 1]:
+        return False
+
+    return True
 
 
 def parse_input_file() -> list[str]:
