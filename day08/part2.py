@@ -1,28 +1,28 @@
-from collections import defaultdict
 from copy import copy
 
 INPUT = """\
-be cfbegad cbdgef fgaecd cgeb fdcge agebfd fecdb fabcd edb |\
+be cfbegad cbdgef fgaecd cgeb fdcge agebfd fecdb fabcd edb |
 fdgacbe cefdb cefbgd gcbe
-edbfga begcd cbg gc gcadebf fbgde acbgfd abcde gfcbed gfec |\
+edbfga begcd cbg gc gcadebf fbgde acbgfd abcde gfcbed gfec |
 fcgedb cgb dgebacf gc
-fgaebd cg bdaec gdafb agbcfd gdcbef bgcad gfac gcb cdgabef |\
+fgaebd cg bdaec gdafb agbcfd gdcbef bgcad gfac gcb cdgabef |
 cg cg fdcagb cbg
-fbegcd cbd adcefb dageb afcb bc aefdc ecdab fgdeca fcdbega |\
+fbegcd cbd adcefb dageb afcb bc aefdc ecdab fgdeca fcdbega |
 efabcd cedba gadfec cb
-aecbfdg fbg gf bafeg dbefa fcge gcbea fcaegb dgceab fcbdga |\
+aecbfdg fbg gf bafeg dbefa fcge gcbea fcaegb dgceab fcbdga |
 gecf egdcabf bgf bfgea
-fgeab ca afcebg bdacfeg cfaedg gcfdb baec bfadeg bafgc acf |\
+fgeab ca afcebg bdacfeg cfaedg gcfdb baec bfadeg bafgc acf |
 gebdcfa ecba ca fadegcb
-dbcfg fgd bdegcaf fgec aegbdf ecdfab fbedc dacgb gdcebf gf |\
+dbcfg fgd bdegcaf fgec aegbdf ecdfab fbedc dacgb gdcebf gf |
 cefg dcbef fcge gbcadfe
-bdfegc cbegaf gecbf dfcage bdacg ed bedf ced adcbefg gebcd |\
+bdfegc cbegaf gecbf dfcage bdacg ed bedf ced adcbefg gebcd |
 ed bcgafe cdgba cbgef
-egadfb cdbfeg cegd fecab cgb gbdefca cg fgcdab egfdb bfceg |\
+egadfb cdbfeg cegd fecab cgb gbdefca cg fgcdab egfdb bfceg |
 gbdfcae bgc cg cgb
-gcafb gcf dcaebfg ecagb gf abcdeg gaef cafbge fdbac fegbdc |\
+gcafb gcf dcaebfg ecagb gf abcdeg gaef cafbge fdbac fegbdc |
 fgae cfgab fg bagce
 """
+INPUT = INPUT.replace("|\n", "|")
 
 
 def main(input_data: list[tuple[list[str], list[str]]]) -> int:
@@ -45,7 +45,7 @@ def parse_single_row(input_digits: list[str], output_digits: list[str]) -> int:
 
 
 def decode_easy_digits(input_digits: list[str]) -> dict[int, str]:
-    encoding = defaultdict(str)
+    encoding = {}
 
     for digit in sort_str_list(input_digits):
         if len(digit) == 2:
