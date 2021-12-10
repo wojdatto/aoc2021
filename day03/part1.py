@@ -56,10 +56,17 @@ def parse_input() -> list[str]:
         return file.read().splitlines()
 
 
-def test_main():
-    input_data = INPUT.splitlines()
-    assert main(input_data) == 198
+def test_main_example_data():
+    assert main(INPUT.splitlines()) == 198
+
+
+def test_main_real_data():
+    assert main(parse_input()) == 3687446
 
 
 if __name__ == "__main__":
-    main(parse_input())
+    test_result = main(INPUT.splitlines())
+    print(f"{test_result=}")
+
+    real_result = main(parse_input())
+    print(f"{real_result=}")
