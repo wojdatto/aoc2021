@@ -1,5 +1,7 @@
 from collections import defaultdict
 
+import pytest
+
 INPUT = "16,1,2,0,4,2,7,1,2,14"
 
 
@@ -32,6 +34,7 @@ def test_main_example_data():
     assert main([int(i) for i in INPUT.split(",")]) == 168
 
 
+@pytest.mark.slow
 def test_main_real_data():
     assert main(parse_input()) == 98257206
 
