@@ -1,22 +1,39 @@
-def main():
+INPUT = """\
+199
+200
+208
+210
+200
+207
+240
+269
+260
+263
+"""
+
+
+def main(lines_str: list[str]):
+    lines = [int(ln) for ln in lines_str]
+
+    return sum(lines[i] > lines[i - 3] for i in range(3, len(lines)))
+
+
+def parse_input_file() -> list[str]:
     with open("day01/input.txt", "r") as file:
-        lines = file.readlines()
+        return file.read().splitlines()
 
-    measurement = 0
-    increased = 0
 
-    lines = [int(line.strip()) for line in lines]
-    lines_sum = [sum(lines[i : i + 3]) for i, _ in enumerate(lines)]
+def test_main_example_data():
+    assert main(INPUT.splitlines()) == 5
 
-    for line in lines_sum:
-        if line > measurement:
-            increased += 1
-        measurement = line
 
-    increased -= 1  # we have to ignore the first increase
-
-    print(f"{increased=}")
+def test_main_real_data():
+    assert main(parse_input_file()) == 1739
 
 
 if __name__ == "__main__":
-    main()
+    test_result = main(INPUT.splitlines())
+    print(f"{test_result=}")
+
+    real_result = main(parse_input_file())
+    print(f"{real_result=}")
