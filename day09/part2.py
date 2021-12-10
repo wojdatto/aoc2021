@@ -1,6 +1,10 @@
 import math
+from collections import defaultdict
+from typing import Generator
 
 from colorama import Fore, Style
+
+MAX_HEIGHT = 9
 
 INPUT = """\
 2199943210
@@ -12,25 +16,29 @@ INPUT = """\
 
 
 def main(input_lines: list[str]) -> int:
-    matrix = [[int(n) for n in line] for line in input_lines]
+    # we use 9+1, to omit these while printing
+    coords = defaultdict(lambda: MAX_HEIGHT + 1)
     low_points: list[tuple[int, int]] = []
 
-    for row_i, row in enumerate(matrix):
-        for col_i, number in enumerate(row):
-            if are_neighbors_bigger(matrix, number, row_i, col_i):
-                low_points.append((row_i, col_i))
+    for y, line in enumerate(input_lines):
+        for x, val in enumerate(line):
+            coords[(x, y)] = int(val)
+
+    for (x, y), n in coords.items():
+        if all(coords.get(neigh, MAX_HEIGHT) > n for neigh in get_neighbors(x, y)):
+            low_points.append((x, y))
 
     basins: list[set[tuple[int, int]]] = []
 
-    for point in low_points:
-        basin: set[tuple[int, int]] = {point}
-        basin = check_neighbors(matrix, point, basin)
+    for x, y in low_points:
+        basin: set[tuple[int, int]] = {(x, y)}
+        basin = check_neighbors(coords, (x, y), basin)
         basins.append(basin)
 
     three_largest_basins = sorted(basins, reverse=True, key=len)[0:3]
 
     for basin in three_largest_basins:
-        print_basin(matrix, basin)
+        print_basin(coords, basin)
         print()
 
     three_largest_basin_size = [len(basin) for basin in three_largest_basins]
@@ -39,69 +47,40 @@ def main(input_lines: list[str]) -> int:
     return math.prod(three_largest_basin_size)
 
 
-def print_basin(matrix: list[list[int]], basin: set[tuple[int, int]]) -> None:
-    for ri, row in enumerate(matrix):
-        for ci, number in enumerate(row):
-            is_print = False
-            for basin_row, basin_col in basin:
-                if ri == basin_row and ci == basin_col:
-                    is_print = True
-                    break
-            if is_print:
-                print(Fore.RED + str(number), end="")
+def print_basin(
+    coords: dict[tuple[int, int], int], basin: set[tuple[int, int]]
+) -> None:
+    y0 = 0
+    for x, y in coords:
+        if x >= 0 and y >= 0 and coords[(x, y)] < 10:
+            if y > y0:  # go to the next line
+                print(Style.RESET_ALL)
+                y0 = y
+            if (x, y) in basin:
+                color = Fore.RED
             else:
-                print(Fore.WHITE + str(number), end="")
-        print(Style.RESET_ALL)
+                color = Fore.WHITE
+            print(color + str(coords[(x, y)]), end="")
+    print(Style.RESET_ALL)
 
 
 def check_neighbors(
-    matrix: list[list[int]], point: tuple[int, int], basin: set[tuple[int, int]]
+    coords: dict[tuple[int, int], int],
+    point: tuple[int, int],
+    basin: set[tuple[int, int]],
 ) -> set[tuple[int, int]]:
-    for neigh in get_neighbors(matrix, point):
-        if matrix[neigh[0]][neigh[1]] < 9 and neigh not in basin:
-            basin.add(neigh)
-            basin = check_neighbors(matrix, neigh, basin)
+    for x, y in get_neighbors(*point):
+        if coords[(x, y)] < 9 and (x, y) not in basin:
+            basin.add((x, y))
+            basin = check_neighbors(coords, (x, y), basin)
     return basin
 
 
-def get_neighbors(
-    matrix: list[list[int]], point: tuple[int, int]
-) -> list[tuple[int, int]]:
-    row_i, col_i = point
-    neighbors = []
-
-    if row_i != 0:
-        neighbors.append((row_i - 1, col_i))
-
-    if row_i != len(matrix) - 1:
-        neighbors.append((row_i + 1, col_i))
-
-    if col_i != 0:
-        neighbors.append((row_i, col_i - 1))
-
-    if col_i != len(matrix[0]) - 1:
-        neighbors.append((row_i, col_i + 1))
-
-    return neighbors
-
-
-def are_neighbors_bigger(
-    matrix: list[list[int]], number: int, row_i: int, col_i: int
-) -> bool:
-    # top
-    if row_i != 0 and number >= matrix[row_i - 1][col_i]:
-        return False
-    # bottom
-    if row_i != len(matrix) - 1 and number >= matrix[row_i + 1][col_i]:
-        return False
-    # left
-    if col_i != 0 and number >= matrix[row_i][col_i - 1]:
-        return False
-    # right
-    if col_i != len(matrix[0]) - 1 and number >= matrix[row_i][col_i + 1]:
-        return False
-
-    return True
+def get_neighbors(x: int, y: int) -> Generator[tuple[int, int], None, None]:
+    yield x + 1, y
+    yield x - 1, y
+    yield x, y + 1
+    yield x, y - 1
 
 
 def parse_input_file() -> list[str]:
