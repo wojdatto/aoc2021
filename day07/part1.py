@@ -29,11 +29,16 @@ def parse_input() -> list[int]:
 
 
 def test_main_example_data():
-    test_input = [int(i) for i in INPUT.split(",")]
-    assert main(test_input) == 37
+    assert main([int(i) for i in INPUT.split(",")]) == 37
+
+
+def test_main_real_data():
+    assert main(parse_input()) == 347509
 
 
 if __name__ == "__main__":
-    test_input = [int(i) for i in INPUT.split(",")]
-    fuel_spent = main(parse_input())
-    print(f"{fuel_spent=}")
+    test_result = main([int(i) for i in INPUT.split(",")])
+    print(f"{test_result=}")
+
+    real_result = main(parse_input())
+    print(f"{real_result=}")
