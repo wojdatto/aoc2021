@@ -1,3 +1,7 @@
+from typing import Generator
+
+MAX_HEIGHT = 9
+
 INPUT = """\
 2199943210
 3987894921
@@ -8,35 +12,25 @@ INPUT = """\
 
 
 def main(input_lines: list[str]) -> int:
-    matrix = [[int(n) for n in line] for line in input_lines]
+    coords = {}
 
-    low_points: list[tuple[int, int, int]] = []
+    for y, line in enumerate(input_lines):
+        for x, val in enumerate(line):
+            coords[(x, y)] = int(val)
 
-    for row_i, row in enumerate(matrix):
-        for col_i, number in enumerate(row):
-            if are_neighbors_bigger(matrix, number, row_i, col_i):
-                low_points.append((row_i, col_i, number))
+    low_points = 0
 
-    return sum(number + 1 for _, _, number in low_points)
+    for (x, y), n in coords.items():
+        if all(coords.get(neigh, MAX_HEIGHT) > n for neigh in get_neighbors(x, y)):
+            low_points += n + 1
+    return low_points
 
 
-def are_neighbors_bigger(
-    matrix: list[list[int]], number: int, row_i: int, col_i: int
-) -> bool:
-    # top
-    if row_i != 0 and number >= matrix[row_i - 1][col_i]:
-        return False
-    # bottom
-    if row_i != len(matrix) - 1 and number >= matrix[row_i + 1][col_i]:
-        return False
-    # left
-    if col_i != 0 and number >= matrix[row_i][col_i - 1]:
-        return False
-    # right
-    if col_i != len(matrix[0]) - 1 and number >= matrix[row_i][col_i + 1]:
-        return False
-
-    return True
+def get_neighbors(x: int, y: int) -> Generator[tuple[int, int], None, None]:
+    yield x + 1, y
+    yield x - 1, y
+    yield x, y + 1
+    yield x, y - 1
 
 
 def parse_input_file() -> list[str]:
