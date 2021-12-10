@@ -1,5 +1,4 @@
-from collections import defaultdict
-from dataclasses import dataclass, field
+from collections import Counter
 
 INPUT = """\
 0,9 -> 5,9
@@ -15,71 +14,47 @@ INPUT = """\
 """
 
 
-@dataclass
-class Coordinates:
-    x1: list[int] = field(default_factory=list)
-    x2: list[int] = field(default_factory=list)
-    y1: list[int] = field(default_factory=list)
-    y2: list[int] = field(default_factory=list)
-
-    def __post_init__(self):
-        self.overlapping = defaultdict(int)
-
-    @property
-    def min_x(self) -> int:
-        return min(set(self.x1 + self.x2))
-
-    @property
-    def min_y(self) -> int:
-        return min(set(self.y1 + self.y2))
-
-    @property
-    def max_x(self) -> int:
-        return max(set(self.x1 + self.x2))
-
-    @property
-    def max_y(self) -> int:
-        return max(set(self.y1 + self.y2))
-
-    def print_all(self) -> None:
-        for y in range(self.min_y, self.max_y + 1):
-            for x in range(self.min_x, self.max_x + 1):
-                if self.overlapping[(x, y)]:
-                    print(self.overlapping[(x, y)], end="")
-                else:
-                    print(".", end="")
-            print()
-
-
 def main(lines: list[str], is_test: bool = False) -> int:
-    coords = Coordinates()
+    coords: Counter[tuple[int, int]] = Counter()
+    max_x, max_y = -1, -1
 
     for line in lines:
-        x1y1, _, x2y2 = line.partition(" -> ")
-        x1, y1, x2, y2 = ",".join([x1y1, x2y2]).split(",")
+        start, end = line.split(" -> ")
+        x1_s, y1_s = start.split(",")
+        x2_s, y2_s = end.split(",")
+        x1, y1, x2, y2 = int(x1_s), int(y1_s), int(x2_s), int(y2_s)
 
-        coords.x1.append(int(x1))
-        coords.x2.append(int(x2))
-        coords.y1.append(int(y1))
-        coords.y2.append(int(y2))
+        max_x = max(max_x, x1, x2)
+        max_y = max(max_y, y1, y2)
 
-    for x1, y1, x2, y2 in zip(coords.x1, coords.y1, coords.x2, coords.y2):
         if x1 == x2:
-            y_smaller = min(y1, y2)
-            y_bigger = max(y1, y2)
-            for i in range(y_smaller, y_bigger + 1):
-                coords.overlapping[(x1, i)] += 1
-        if y1 == y2:
-            x_smaller = min(x1, x2)
-            x_bigger = max(x1, x2)
-            for i in range(x_smaller, x_bigger + 1):
-                coords.overlapping[(i, y1)] += 1
+            for i in range(min(y1, y2), max(y1, y2) + 1):
+                coords[(x1, i)] += 1
+        elif y1 == y2:
+            for i in range(min(x1, x2), max(x1, x2) + 1):
+                coords[(i, y1)] += 1
 
     if is_test:
-        coords.print_all()
+        print_all(coords, max_x, max_y)
 
-    total_overlapping = sum([1 for i in coords.overlapping.values() if i > 1])
-    return total_overlapping
+    count = 0
+    for _, val in coords.most_common():
+        if val > 1:
+            count += 1
+        else:
+            break
+
+    return count
+
+
+def print_all(coords: Counter[tuple[int, int]], max_x, max_y) -> None:
+    for y in range(max_x + 1):
+        for x in range(max_y + 1):
+            if coords[(x, y)]:
+                print(coords[(x, y)], end="")
+            else:
+                print(".", end="")
+        print()
 
 
 def parse_input() -> list[str]:
