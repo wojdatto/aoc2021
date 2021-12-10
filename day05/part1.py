@@ -21,7 +21,9 @@ class Coordinates:
     x2: list[int] = field(default_factory=list)
     y1: list[int] = field(default_factory=list)
     y2: list[int] = field(default_factory=list)
-    overlapping = defaultdict(int)
+
+    def __post_init__(self):
+        self.overlapping = defaultdict(int)
 
     @property
     def min_x(self) -> int:
@@ -49,7 +51,7 @@ class Coordinates:
             print()
 
 
-def main(lines: list[str]):
+def main(lines: list[str], is_test: bool = False) -> int:
     coords = Coordinates()
 
     for line in lines:
@@ -73,10 +75,11 @@ def main(lines: list[str]):
             for i in range(x_smaller, x_bigger + 1):
                 coords.overlapping[(i, y1)] += 1
 
-    # coords.print_all()
+    if is_test:
+        coords.print_all()
 
     total_overlapping = sum([1 for i in coords.overlapping.values() if i > 1])
-    print(f"{total_overlapping=}")
+    return total_overlapping
 
 
 def parse_input() -> list[str]:
@@ -84,6 +87,17 @@ def parse_input() -> list[str]:
         return file.read().splitlines()
 
 
+def test_play_game_example_data():
+    assert main(INPUT.splitlines()) == 5
+
+
+def test_play_game_real_data():
+    assert main(parse_input()) == 4421
+
+
 if __name__ == "__main__":
-    # main(INPUT.splitlines())
-    main(parse_input())
+    test_result = main(INPUT.splitlines(), is_test=True)
+    print(f"\n{test_result=}")
+
+    real_result = main(parse_input())
+    print(f"{real_result=}")
