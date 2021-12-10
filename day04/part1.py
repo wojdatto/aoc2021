@@ -25,7 +25,6 @@ class Game:
                         board.matrix[np.where(board.truth_matrix == 0)]
                     )
                     final_result = number * sum_of_unmarked
-                    print(f"Game won!\nThe final result is {final_result}")
                     return final_result
 
     def check_if_won(self, matrix: NDArray) -> bool:
@@ -46,7 +45,7 @@ class Board:
         self.matrix = np.array(self.numbers).reshape(ROWS, COLUMNS)
 
 
-INPUT = """
+INPUT = """\
 7,4,9,5,11,17,23,2,0,14,21,24,10,16,13,6,15,25,12,22,18,20,8,19,3,26,1
 
 22 13 17 11  0
@@ -96,12 +95,22 @@ def construct_boards(data: list[str]) -> list[Board]:
     return boards
 
 
-def test_play_game():
-    game = parse_file(INPUT.split("\n")[1:])
+def test_play_game_example_data():
+    game = parse_file(INPUT.split("\n"))
     assert game.play_game() == 4512
 
 
+def test_play_game_real_data():
+    game = parse_file(read_file("day04/input.txt"))
+    assert game.play_game() == 12796
+
+
 if __name__ == "__main__":
+    test_game = parse_file(INPUT.split("\n"))
+    test_result = test_game.play_game()
+    print(f"{test_result=}")
+
     lines = read_file("day04/input.txt")
-    game = parse_file(lines)
-    game.play_game()
+    real_game = parse_file(lines)
+    real_result = real_game.play_game()
+    print(f"{real_result=}")
