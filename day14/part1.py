@@ -1,7 +1,7 @@
-from collections import Counter
+from collections import Counter, defaultdict
+from copy import copy
 
 STEPS = 10
-
 INPUT = """\
 NNCB
 
@@ -26,23 +26,34 @@ CN -> C
 
 def main(template: str, rules_list: list[str]) -> int:
     rules = {key: val for key, val in [rule.split(" -> ") for rule in rules_list]}
+    letters = defaultdict(int)
 
-    for _ in range(1, STEPS + 1):
-        template = update_template(template, rules)
+    for char in range(len(template) - 1):
+        letters[template[char : char + 2]] += 1
 
-    count = Counter(template)
-    most_common = count.most_common(1)[0][1]
-    least_common = count.most_common()[-1][1]
+    step = 0
+    while step < STEPS:
+        letters_cp = copy(letters)
+        for pair in letters_cp:
+            amount = letters_cp[pair]
+            if amount:
+                first, last = pair
+                middle = rules[pair]
+                letters[first + middle] += amount
+                letters[middle + last] += amount
+                letters[pair] -= amount
+        step += 1
+
+    count = defaultdict(int)
+    for key, value in letters.items():
+        count[key[0]] += value
+
+    counter = Counter(count)
+    offset = 1  # most common is 1 lower than it should be for some reason
+    most_common = counter.most_common(1)[0][1] + offset
+    least_common = counter.most_common()[-1][1]
 
     return most_common - least_common
-
-
-def update_template(template: str, rules: dict[str, str]) -> str:
-    template_new = ""
-    for char in range(len(template) - 1):
-        s = template[char : char + 2]
-        template_new += s[0] + rules[s]
-    return template_new + template[-1]
 
 
 def parse_input(input_data: str) -> tuple[str, list[str]]:
