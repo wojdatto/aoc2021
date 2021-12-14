@@ -1,7 +1,6 @@
 import itertools
 from collections import Counter, defaultdict
 
-PATHS_SMALL = 10
 INPUT_SMALL = """\
 start-A
 start-b
@@ -12,7 +11,6 @@ A-end
 b-end
 """
 
-PATHS_MEDIUM = 19
 INPUT_MEDIUM = """\
 dc-end
 HN-start
@@ -26,7 +24,6 @@ kj-HN
 kj-dc
 """
 
-PATHS_BIG = 226
 INPUT_BIG = """\
 fs-end
 he-DX
