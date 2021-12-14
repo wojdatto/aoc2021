@@ -72,13 +72,10 @@ def find_way(
     destinations = connections[path_list[-1]]
     for dest in sorted(destinations):
         proposal = path + "," + dest
-        if dest == "start":
-            continue
-        elif dest.lower() in path_list:
+        if dest == "start" or dest.lower() in path_list:
             continue
         elif dest == "end":
-            if proposal not in paths:
-                paths.add(proposal)
+            paths.add(proposal)
         else:
             paths = find_way(paths, connections, proposal)
 

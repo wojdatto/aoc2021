@@ -79,8 +79,7 @@ def find_way(
             if all([C[key] < 2 for key in C.keys() if key == key.lower()]):
                 paths = find_way(paths, connections, proposal)
         elif dest == "end":
-            if proposal not in paths:
-                paths.add(proposal)
+            paths.add(proposal)
         else:
             paths = find_way(paths, connections, proposal)
 
