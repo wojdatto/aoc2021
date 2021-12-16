@@ -1,4 +1,5 @@
 import heapq
+from pathlib import Path
 from typing import Generator
 
 INPUT = """\
@@ -55,7 +56,7 @@ def get_neighbors(x: int, y: int) -> Generator[tuple[int, int], None, None]:
 
 
 def parse_input_file() -> list[str]:
-    with open("day15/input.txt", "r") as file:
+    with open(Path(Path(__file__).parent, "input.txt"), "r") as file:
         return file.read().splitlines()
 
 
