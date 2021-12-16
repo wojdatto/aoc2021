@@ -1,4 +1,5 @@
 from collections import Counter
+from pathlib import Path
 
 INPUT = """\
 0,9 -> 5,9
@@ -71,7 +72,7 @@ def print_all(coords: Counter[tuple[int, int]], max_x, max_y) -> None:
 
 
 def parse_input() -> list[str]:
-    with open("day05/input.txt", "r") as file:
+    with open(Path(Path(__file__).parent, "input.txt"), "r") as file:
         return file.read().splitlines()
 
 

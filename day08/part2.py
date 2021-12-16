@@ -1,4 +1,5 @@
 from copy import copy
+from pathlib import Path
 
 INPUT = """\
 be cfbegad cbdgef fgaecd cgeb fdcge agebfd fecdb fabcd edb |
@@ -120,7 +121,7 @@ def parse_input_data(input_str: str) -> tuple[list[str], list[str]]:
 
 
 def parse_input_file() -> list[str]:
-    with open("day08/input.txt", "r") as file:
+    with open(Path(Path(__file__).parent, "input.txt"), "r") as file:
         return file.read().splitlines()
 
 

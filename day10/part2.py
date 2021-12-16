@@ -1,3 +1,5 @@
+from pathlib import Path
+
 INPUT = """\
 [({(<(())[]>[[{[]{<()<>>
 [(()[<>])]({[<{<<[]>>(
@@ -73,7 +75,7 @@ def simplify_line(line: str) -> str:
 
 
 def parse_input_file() -> list[str]:
-    with open("day10/input.txt", "r") as file:
+    with open(Path(Path(__file__).parent, "input.txt"), "r") as file:
         return file.read().splitlines()
 
 

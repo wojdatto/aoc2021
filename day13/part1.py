@@ -1,3 +1,5 @@
+from pathlib import Path
+
 INPUT = """\
 6,10
 0,14
@@ -79,7 +81,7 @@ def print_points(coords: set[tuple[int, int]]) -> None:
 
 
 def parse_input_file() -> str:
-    with open("day13/input.txt", "r") as file:
+    with open(Path(Path(__file__).parent, "input.txt"), "r") as file:
         return file.read()
 
 

@@ -1,5 +1,6 @@
 from collections import Counter, defaultdict
 from copy import copy
+from pathlib import Path
 
 STEPS = 10
 INPUT = """\
@@ -62,7 +63,7 @@ def parse_input(input_data: str) -> tuple[str, list[str]]:
 
 
 def parse_input_file() -> str:
-    with open("day14/input.txt", "r") as file:
+    with open(Path(Path(__file__).parent, "input.txt"), "r") as file:
         return file.read()
 
 

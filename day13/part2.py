@@ -1,3 +1,5 @@
+from pathlib import Path
+
 INPUT = """\
 6,10
 0,14
@@ -95,7 +97,7 @@ def render_text(coords: set[tuple[int, int]]) -> str:
 
 
 def parse_input_file() -> str:
-    with open("day13/input.txt", "r") as file:
+    with open(Path(Path(__file__).parent, "input.txt"), "r") as file:
         return file.read()
 
 

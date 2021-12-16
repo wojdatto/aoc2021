@@ -1,5 +1,6 @@
 import itertools
 from collections import Counter, defaultdict
+from pathlib import Path
 
 INPUT_SMALL = """\
 start-A
@@ -87,7 +88,7 @@ def find_way(
 
 
 def parse_input_file() -> list[str]:
-    with open("day12/input.txt", "r") as file:
+    with open(Path(Path(__file__).parent, "input.txt"), "r") as file:
         return file.read().splitlines()
 
 

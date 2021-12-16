@@ -1,3 +1,5 @@
+from pathlib import Path
+
 INPUT = "16,1,2,0,4,2,7,1,2,14"
 
 
@@ -16,7 +18,7 @@ def compute_spent_fuel(numbers: list[int], target: int) -> int:
 
 
 def parse_input() -> list[int]:
-    with open("day07/input.txt", "r") as file:
+    with open(Path(Path(__file__).parent, "input.txt"), "r") as file:
         data = file.readline().split(",")
     return [int(i) for i in data]
 

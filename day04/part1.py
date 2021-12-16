@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from pathlib import Path
 
 import numpy as np
 from numpy.typing import NDArray
@@ -68,8 +69,8 @@ INPUT = """\
 """
 
 
-def read_file(filename) -> list[str]:
-    with open(filename, "r") as file:
+def read_file() -> list[str]:
+    with open(Path(Path(__file__).parent, "input.txt"), "r") as file:
         lines = [line.strip() for line in file.readlines()]
     return lines
 
@@ -101,7 +102,7 @@ def test_play_game_example_data():
 
 
 def test_play_game_real_data():
-    game = parse_file(read_file("day04/input.txt"))
+    game = parse_file(read_file())
     assert game.play_game() == 12796
 
 
@@ -110,7 +111,7 @@ if __name__ == "__main__":
     test_result = test_game.play_game()
     print(f"{test_result=}")
 
-    lines = read_file("day04/input.txt")
+    lines = read_file()
     real_game = parse_file(lines)
     real_result = real_game.play_game()
     print(f"{real_result=}")

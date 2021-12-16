@@ -1,3 +1,5 @@
+from pathlib import Path
+
 INPUT = """\
 199
 200
@@ -19,7 +21,7 @@ def main(lines_str: list[str]):
 
 
 def parse_input_file() -> list[str]:
-    with open("day01/input.txt", "r") as file:
+    with open(Path(Path(__file__).parent, "input.txt"), "r") as file:
         return file.read().splitlines()
 
 

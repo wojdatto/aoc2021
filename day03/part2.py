@@ -1,3 +1,5 @@
+from pathlib import Path
+
 INPUT = """\
 00100
 11110
@@ -91,7 +93,7 @@ def more_common(data: list[str]) -> str:
 
 
 def parse_input() -> list[str]:
-    with open("day03/input.txt", "r") as file:
+    with open(Path(Path(__file__).parent, "input.txt"), "r") as file:
         return file.read().splitlines()
 
 

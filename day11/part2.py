@@ -1,5 +1,6 @@
 from collections import defaultdict
 from copy import copy
+from pathlib import Path
 from typing import Generator
 
 OUT_OF_BOUNDARY = -1
@@ -80,7 +81,7 @@ def print_coords(coords: defaultdict[tuple[int, int], int]):
 
 
 def parse_input_file() -> list[str]:
-    with open("day11/input.txt", "r") as file:
+    with open(Path(Path(__file__).parent, "input.txt"), "r") as file:
         return file.read().splitlines()
 
 

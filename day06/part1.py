@@ -1,4 +1,5 @@
 from collections import Counter
+from pathlib import Path
 
 INPUT = "3,4,3,1,2"
 DAYS_TO_SIMULATE = 80
@@ -18,7 +19,7 @@ def main(data: list[int]) -> int:
 
 
 def parse_input() -> list[int]:
-    with open("day06/input.txt", "r") as file:
+    with open(Path(Path(__file__).parent, "input.txt"), "r") as file:
         data = file.readline().split(",")
     return [int(i) for i in data]
 
