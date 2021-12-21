@@ -2,6 +2,8 @@ import itertools
 from collections import Counter, defaultdict
 from pathlib import Path
 
+import pytest
+
 INPUT_SMALL = """\
 start-A
 start-b
@@ -118,5 +120,6 @@ def test_main_example_data_big():
     assert main(INPUT_BIG.splitlines()) == 3509
 
 
+@pytest.mark.slow
 def test_main_real_data():
     assert main(parse_input_file()) == 91292

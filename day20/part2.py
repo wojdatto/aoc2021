@@ -2,6 +2,8 @@ from collections import defaultdict
 from pathlib import Path
 from typing import Generator
 
+import pytest
+
 ITERATIONS = 50
 
 INPUT = """\
@@ -109,5 +111,6 @@ def test_main_example_data():
     assert main(INPUT) == 3351
 
 
+@pytest.mark.slow
 def test_main_real_data():
     assert main(parse_input_file()) == 17628

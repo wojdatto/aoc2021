@@ -2,6 +2,8 @@ import heapq
 from pathlib import Path
 from typing import Generator
 
+import pytest
+
 INPUT = """\
 1163751742
 1381373672
@@ -85,5 +87,6 @@ def test_main_example_data():
     assert main(INPUT.splitlines()) == 315
 
 
+@pytest.mark.slow
 def test_main_real_data():
     assert main(parse_input_file()) == 2864

@@ -4,6 +4,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 import numpy as np
+import pytest
 from numpy.typing import NDArray
 
 ROWS = 5
@@ -117,6 +118,7 @@ def test_play_game_example_data():
     assert main(INPUT.split("\n")) == 1924
 
 
+@pytest.mark.slow
 def test_play_game_real_data():
     assert main(read_file()) == 18063
 
