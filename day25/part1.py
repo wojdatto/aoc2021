@@ -1,7 +1,6 @@
 from copy import copy
 from pathlib import Path
 
-
 INPUT = """\
 v...>>.vv>
 .vv>>.vv..
@@ -20,7 +19,7 @@ def main(s: list[str]) -> int:
     for y, line in enumerate(s):
         for x, p in enumerate(line):
             points[(x, y)] = p
-    
+
     max_x, max_y = max(points.keys())
     iteration = 0
     is_move = True
